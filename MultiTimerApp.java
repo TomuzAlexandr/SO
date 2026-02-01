@@ -5,7 +5,7 @@ class BeepTask extends TimerTask {
     @Override
     public void run() {
         Toolkit.getDefaultToolkit().beep();
-        System.out.println("➡️ Beep la fiecare 2 secunde");
+        System.out.println("🔔 Timer 1: beep la fiecare 2 secunde.");
     }
 }
 
@@ -18,7 +18,7 @@ class ReminderTask extends TimerTask {
 
     @Override
     public void run() {
-        System.out.println("⏰ " + message);
+        System.out.println("⏰ Timer 2: " + message);
     }
 }
 
@@ -32,34 +32,36 @@ class CountdownTask extends TimerTask {
     @Override
     public void run() {
         if (secondsLeft > 0) {
-            System.out.println("⌛ Timp ramas: " + secondsLeft + " secunde");
+            System.out.println("⌛ Timer 3: mai sunt " + secondsLeft + " secunde...");
             secondsLeft--;
         } else {
-            System.out.println("✅ Countdown terminat!");
-            this.cancel(); // oprim timerul
+            System.out.println("✅ Timer 3: countdown terminat!");
+            this.cancel();
         }
     }
 }
 
 public class MultiTimerApp {
     public static void main(String[] args) {
-        Timer t1 = new Timer(); // Se repetă la fiecare 2 secunde
-        Timer t2 = new Timer(); // Programare la ora exactă
-        Timer t3 = new Timer(); // Începe după 3 secunde și se repetă
 
-        System.out.println("▶️ Pornim aplicatia...");
+        System.out.println("🚀 Pornim aplicația MultiTimerApp...\n");
 
-        // 1️⃣ Timer care reacționează periodic (la fiecare 2 secunde)
+        // Timer 1 — rulează la fiecare 2 secunde
+        Timer t1 = new Timer();
+        System.out.println("🔹 Am pornit Timer 1 (sunet la fiecare 2 secunde)");
         t1.scheduleAtFixedRate(new BeepTask(), 0, 2000);
 
-        // 2️⃣ Timer care reacționează la o oră exactă (ex: în următorul minut)
+        // Timer 2 — la 10 secunde după pornire
         Calendar calendar = Calendar.getInstance();
-        calendar.add(Calendar.SECOND, 10); // rulează peste 10s de la pornire
+        calendar.add(Calendar.SECOND, 10);
         Date specificTime = calendar.getTime();
-        t2.schedule(new ReminderTask("A trecut ora setată (10 secunde de la start)!"), specificTime);
+        Timer t2 = new Timer();
+        System.out.println("🔹 Am pornit Timer 2 (mesaj după 10 secunde)");
+        t2.schedule(new ReminderTask("A trecut ora setată!"), specificTime);
 
-        // 3️⃣ Timer care începe după 3 secunde și rulează periodic la fiecare 1 secundă
+        // Timer 3 — countdown
+        Timer t3 = new Timer();
+        System.out.println("🔹 Am pornit Timer 3 (countdown de 5 secunde după 3 secunda)");
         t3.schedule(new CountdownTask(5), 3000, 1000);
     }
 }
-
